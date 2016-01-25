@@ -351,7 +351,7 @@ QSharedPointer<QSGTexture> ResourceHolder::initTexture(bool quadNeedsBlending, R
         m_texture = texture;
     }
     // All quads using a resource should request the same blending state.
-    Q_ASSERT(texture->hasAlphaChannel() || !quadNeedsBlending);
+    //Q_ASSERT(texture->hasAlphaChannel() || !quadNeedsBlending);
     return texture;
 }
 
