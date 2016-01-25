@@ -1,12 +1,13 @@
 @ECHO ON
-SET _LOGFILE=D:\Qt\buildlog.txt
+SET _REPOROOT=%~dp0
+SET _LOGFILE=%_REPOROOT%buildlog.txt
 ECHO Setting up variables > %_LOGFILE%
 @REM Set up \Microsoft Visual Studio 2013, where <arch> is \c amd64, \c x86, etc.
 CALL "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\VsDevCmd.bat"
 CALL "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat"
 @REM add paths for qtbase\bin and gnuwin32\bin.
-SET _ROOT=%~dp0
-SET _ROOT=%_ROOT%qt-5
+
+SET _ROOT=%_REPOROOT%qt-5
 SET PATH=%_ROOT%\qtbase\bin;%_ROOT%\gnuwin32\bin;%PATH%
 REM Uncomment the below line when using a git checkout of the source repository
 REM SET PATH=%_ROOT%\qtrepotools\bin;%PATH%
@@ -15,12 +16,12 @@ SET QMAKESPEC=win32-msvc2013
 SET _ROOT=
 
 
-SET INCLUDE=%INCLUDE%D:\Qt\icu53_1\include;
+SET INCLUDE=%INCLUDE%%_REPOROOT%icu53_1\include;
 
-SET LIB=%LIB%D:\Qt\icu53_1\lib;
-SET PATH=D:\Qt\icu53_1\lib;%PATH%
+SET LIB=%LIB%%_REPOROOT%icu53_1\lib;
+SET PATH=%_REPOROOT%icu53_1\lib;%PATH%
 
-cd D:\Qt\qt-5
+cd %_REPOROOT%qt-5
 
 ECHO Run Configure >> %_LOGFILE%
 @CMD /c configure -icu -debug -nomake examples -nomake tests -opensource -confirm-license
