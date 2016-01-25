@@ -3,12 +3,13 @@
 *.slo
 *.lo
 *.o
-*.a
-*.la
+#*.a
+# *.la
 *.lai
-*.so
-*.dll
+#*.so
+# *.dll
 *.dylib
+
 
 # Qt-es
 
@@ -19,11 +20,11 @@
 *.qbs.user
 *.qbs.user.*
 *.moc
-moc_*.cpp
-qrc_*.cpp
-ui_*.h
-Makefile*
-*build-*
+#moc_*.cpp
+#qrc_*.cpp
+#ui_*.h
+#Makefile*
+#*build-*
 
 # QtCreator
 

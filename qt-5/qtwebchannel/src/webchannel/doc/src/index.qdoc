@@ -1,0 +1,56 @@
+/****************************************************************************
+**
+** Copyright (C) 2014 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com, author Milian Wolff <milian.wolff@kdab.com>
+** Contact: http://www.qt.io/licensing/
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see http://www.qt.io/terms-conditions. For further
+** information use the contact form at http://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: http://www.gnu.org/copyleft/fdl.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \page qtwebchannel-index.html
+    \since 5.4
+    \title Qt WebChannel
+    \brief Bridges the gap between Qt applications and HTML/JavaScript.
+
+    Qt WebChannel enables peer-to-peer communication between the host
+    (QML/C++ application) and the client (HTML/JavaScript application). The
+    transport mechanism is supported out of the box by the two popular web
+    engines, Qt WebKit 2 and Qt WebEngine (experimental). It works on all
+    browsers that support Qt WebSockets, enabling Qt WebChannel applications
+    to run in any JavaScript runtime. Additionally, a custom transport
+    mechanism can also be implemented using Qt WebSockets to support Qt
+    WebChannel-based communication.
+
+    The module provides a JavaScript library for seamless integration of C++
+    and QML applications with HTML/JavaScript clients. The client must use the
+    JavaScript library to access the serialized QObjects published by the host
+    applications.
+
+    \section1 Related Information
+
+    \list
+    \li \l{Qt WebChannel JavaScript API}{JavaScript API}
+    \li \l{Qt WebChannel C++ Classes}{C++ API}
+    \li \l{Qt WebChannel QML Types}{QML API}
+    \li \l{Qt WebChannel Examples}{Examples} - show how use the API in practice
+    \endlist
+*/

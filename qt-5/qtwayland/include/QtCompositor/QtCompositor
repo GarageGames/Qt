@@ -1,0 +1,21 @@
+#ifndef QT_QTCOMPOSITOR_MODULE_H
+#define QT_QTCOMPOSITOR_MODULE_H
+#include <QtCompositor/QtCompositorDepends>
+#include "qwaylandbufferref.h"
+#include "qwaylandclient.h"
+#include "qwaylandcompositor.h"
+#include "qwaylanddrag.h"
+#include "qwaylandglobalinterface.h"
+#include "qwaylandinput.h"
+#include "qwaylandinputpanel.h"
+#include "qwaylandoutput.h"
+#include "qwaylandquickcompositor.h"
+#include "qwaylandquickoutput.h"
+#include "qwaylandquicksurface.h"
+#include "qwaylandsurface.h"
+#include "qwaylandsurfaceinterface.h"
+#include "qwaylandsurfaceitem.h"
+#include "qwaylandsurfaceview.h"
+#include "qwaylandexport.h"
+#include "qtcompositorversion.h"
+#endif

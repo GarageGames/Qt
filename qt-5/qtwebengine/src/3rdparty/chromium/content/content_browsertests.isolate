@@ -1,0 +1,129 @@
+# Copyright (c) 2013 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+{
+  'conditions': [
+    ['OS=="android"', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/content_shell/assets/content_shell.pak',
+        ],
+      },
+    }],
+    ['chromeos==1', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/content_shell.pak',
+        ],
+      },
+    }],
+    ['OS=="linux" or OS=="mac" or OS=="win"', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/content_shell.pak',
+        ],
+      },
+    }],
+    ['OS=="android" or OS=="linux" or OS=="mac" or OS=="win"', {
+      'variables': {
+        'files': [
+          '../media/test/data/',
+          '../net/data/',
+          'test/data/',
+        ],
+      },
+    }],
+    ['OS=="linux"', {
+      'variables': {
+        'command': [
+          '../testing/xvfb.py',
+          '<(PRODUCT_DIR)',
+          '<(PRODUCT_DIR)/content_browsertests<(EXECUTABLE_SUFFIX)',
+          '--test-launcher-bot-mode',
+          '--asan=<(asan)',
+          '--lsan=<(lsan)',
+        ],
+        'files': [
+          '../testing/xvfb.py',
+          '<(PRODUCT_DIR)/content_shell.pak',
+          '<(PRODUCT_DIR)/libffmpegsumo.so',
+          '<(PRODUCT_DIR)/libosmesa.so',
+          '<(PRODUCT_DIR)/libppapi_tests.so',
+        ],
+      },
+    }],
+    ['OS=="linux" and use_ozone==0', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/xdisplaycheck<(EXECUTABLE_SUFFIX)',
+        ],
+      },
+    }],
+    ['OS=="linux" or OS=="mac" or OS=="win"', {
+      'variables': {
+        'files': [
+          '../net/tools/testserver/',
+          '../ppapi/tests/test_case.html',
+          '../ppapi/tests/test_page.css',
+          '../testing/test_env.py',
+          '../third_party/pyftpdlib/',
+          '../third_party/pywebsocket/',
+          '../third_party/tlslite/',
+          '<(PRODUCT_DIR)/content_browsertests<(EXECUTABLE_SUFFIX)',
+        ],
+      },
+    }],
+    ['OS=="mac"', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/Content Shell.app/',
+          '<(PRODUCT_DIR)/ffmpegsumo.so',
+          '<(PRODUCT_DIR)/plugins/npapi_test_plugin.plugin/',
+          '<(PRODUCT_DIR)/plugins/test_netscape_plugin.plugin/',
+          '<(PRODUCT_DIR)/ppapi_tests.plugin/Contents/MacOS/ppapi_tests',
+        ],
+      },
+    }],
+    ['OS=="mac" or OS=="win"', {
+      'variables': {
+        'command': [
+          '../testing/test_env.py',
+          '<(PRODUCT_DIR)/content_browsertests<(EXECUTABLE_SUFFIX)',
+          '--test-launcher-bot-mode',
+          '--asan=<(asan)',
+          '--lsan=<(lsan)',
+        ],
+      },
+    }],
+    ['OS=="win"', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/content_shell.pak',
+          '<(PRODUCT_DIR)/ffmpegsumo.dll',
+          '<(PRODUCT_DIR)/osmesa.dll',
+          '<(PRODUCT_DIR)/plugins/np_test_netscape_plugin.dll',
+          '<(PRODUCT_DIR)/plugins/npapi_test_plugin.dll',
+          '<(PRODUCT_DIR)/ppapi_tests.dll',
+        ],
+      },
+    }],
+    ['OS=="win" and target_arch=="ia32"', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/wow_helper.exe',
+        ],
+      },
+    }],
+    ['OS=="win" and (fastbuild==0 or fastbuild==1)', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/content_browsertests.exe.pdb',
+        ],
+      },
+    }],
+  ],
+  'includes': [
+    '../base/base.isolate',
+    '../gin/v8.isolate',
+  ],
+}

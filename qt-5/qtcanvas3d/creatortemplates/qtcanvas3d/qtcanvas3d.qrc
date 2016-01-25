@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/%ProjectName%/%ProjectName%.qml</file>
+        <file>qml/%ProjectName%/glcode.js</file>
+    </qresource>
+</RCC>

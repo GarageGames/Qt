@@ -1,0 +1,9 @@
+{
+    "Keys": ["mapbox"],
+    "Provider": "mapbox",
+    "Version": 100,
+    "Experimental": false,
+    "Features": [
+        "OnlineMappingFeature"
+    ]
+}

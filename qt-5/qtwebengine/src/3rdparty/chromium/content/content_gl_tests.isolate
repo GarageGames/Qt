@@ -1,0 +1,57 @@
+# Copyright 2013 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+{
+  'conditions': [
+    ['OS=="android" or OS=="linux" or OS=="mac" or OS=="win"', {
+      'variables': {
+        'command': [
+          '<(PRODUCT_DIR)/content_gl_tests<(EXECUTABLE_SUFFIX)',
+        ],
+        'files': [
+          '<(PRODUCT_DIR)/content_gl_tests<(EXECUTABLE_SUFFIX)',
+        ],
+      },
+    }],
+    # TODO(kbr): these two dependencies seem to be necessary when
+    # running the component build to avoid "Failed to mmap datapack"
+    # errors. Should investigate further.
+    ['OS=="linux" or OS=="win"', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/content_resources.pak',
+          '<(PRODUCT_DIR)/ui_test.pak',
+        ],
+      },
+    }],
+    ['OS=="linux"', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/libffmpegsumo.so',
+        ],
+      },
+    }],
+    ['OS=="mac"', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/ffmpegsumo.so',
+        ],
+      },
+    }],
+    ['OS=="win"', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/d3dcompiler_46.dll',
+          '<(PRODUCT_DIR)/libEGL.dll',
+          '<(PRODUCT_DIR)/libGLESv2.dll',
+          '<(PRODUCT_DIR)/ffmpegsumo.dll',
+          '<(PRODUCT_DIR)/osmesa.dll',
+        ],
+      },
+    }],
+  ],
+  'includes': [
+    '../base/base.isolate',
+    '../gin/v8.isolate',
+  ],
+}

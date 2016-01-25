@@ -1,0 +1,8 @@
+These are the templates for Canvas3D project wizards. You can take them into use by copying the
+folders into one of the following directories:
+- share/qtcreator/templates/wizards
+- the local user's configuration folder, $HOME/.config/QtProject/qtcreator/templates/wizards
+- %APPDATA%/QtProject/qtcreator/templates/wizards
+
+On OS X you can Right click on the Qt Creator application package and choose "Show Package
+Contents" and then navigate to Contents/Resources/templates/wizards and copy the templates there.

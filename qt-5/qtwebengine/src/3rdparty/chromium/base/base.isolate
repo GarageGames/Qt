@@ -1,0 +1,71 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+{
+  'includes': [
+    # While the target 'base' doesn't depend on ../third_party/icu/icu.gyp
+    # itself, virtually all targets using it has to include icu. The only
+    # exception is the Windows sandbox (?).
+    '../third_party/icu/icu.isolate',
+  ],
+  'conditions': [
+    ['OS=="linux" and asan==1 and chromeos==0', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/lib/libc++.so',
+        ],
+      },
+    }],
+    ['OS=="mac" and asan==1', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/libclang_rt.asan_osx_dynamic.dylib',
+        ],
+      },
+    }],
+    ['OS=="linux" and asan==1', {
+      'variables': {
+        'files': [
+          '../third_party/llvm-build/Release+Asserts/lib/libstdc++.so.6',
+        ],
+      },
+    }],
+    ['asan==1', {
+      'variables': {
+        'files': [
+          '../tools/valgrind/asan/',
+          '../third_party/llvm-build/Release+Asserts/bin/llvm-symbolizer',
+        ],
+      },
+    }],
+    ['lsan==1', {
+      'variables': {
+        'files': [
+          '../tools/lsan/suppressions.txt',
+        ],
+      },
+    }],
+    ['OS=="win" and component=="shared_library" and CONFIGURATION_NAME=="Debug"', {
+      'variables': {
+        'files': [
+          # Copy the VS runtime DLLs into the isolate so that they
+          # don't have to be preinstalled on the target machine.
+          '<(PRODUCT_DIR)/msvcp120d.dll',
+          '<(PRODUCT_DIR)/msvcr120d.dll',
+          '<(PRODUCT_DIR)/x64/msvcp120d.dll',
+          '<(PRODUCT_DIR)/x64/msvcr120d.dll',
+        ],
+      },
+    }],
+    ['OS=="win" and component=="shared_library" and CONFIGURATION_NAME=="Release"', {
+      'variables': {
+        'files': [
+          # Copy the VS runtime DLLs into the isolate so that they
+          # don't have to be preinstalled on the target machine.
+          '<(PRODUCT_DIR)/msvcp120.dll',
+          '<(PRODUCT_DIR)/msvcr120.dll',
+        ],
+      },
+    }],
+  ],
+}

@@ -1,0 +1,127 @@
+# Copyright 2013 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+{
+  'conditions': [
+    ['OS=="linux"', {
+      'variables': {
+        'command': [
+          '../testing/xvfb.py',
+          '<(PRODUCT_DIR)',
+          '<(PRODUCT_DIR)/interactive_ui_tests<(EXECUTABLE_SUFFIX)',
+          '--test-launcher-bot-mode',
+          '--asan=<(asan)',
+          '--lsan=<(lsan)',
+        ],
+        'files': [
+          '../testing/xvfb.py',
+          '<(PRODUCT_DIR)/libffmpegsumo.so',
+          '<(PRODUCT_DIR)/libosmesa.so',
+          '<(PRODUCT_DIR)/libppapi_tests.so',
+          '<(PRODUCT_DIR)/pyproto/',
+        ],
+      },
+    }],
+    ['OS=="linux" and use_ozone==0', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/xdisplaycheck<(EXECUTABLE_SUFFIX)',
+        ],
+      },
+    }],
+    ['OS=="linux" or OS=="mac" or OS=="win"', {
+      'variables': {
+        'files': [
+          '../net/data/ssl/certificates/',
+          '../net/tools/testserver/',
+          '../ppapi/tests/test_case.html',
+          '../ppapi/tests/test_page.css',
+          '../testing/test_env.py',
+          '../third_party/pyftpdlib/',
+          '../third_party/pywebsocket/',
+          '../third_party/tlslite/',
+          '<(PRODUCT_DIR)/interactive_ui_tests<(EXECUTABLE_SUFFIX)',
+          '<(PRODUCT_DIR)/resources.pak',
+          'test/data/',
+        ],
+        'read_only': 1,
+      },
+    }],
+    ['OS=="linux" or OS=="win"', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/chrome_100_percent.pak',
+          '<(PRODUCT_DIR)/locales/en-US.pak',
+          '<(PRODUCT_DIR)/locales/fr.pak',
+          '<(PRODUCT_DIR)/ui_test.pak',
+        ],
+      },
+    }],
+    ['OS=="mac"', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/<(mac_product_name) Framework.framework/',
+          '<(PRODUCT_DIR)/<(mac_product_name).app/',
+          '<(PRODUCT_DIR)/ffmpegsumo.so',
+          '<(PRODUCT_DIR)/osmesa.so',
+          '<(PRODUCT_DIR)/ppapi_tests.plugin/Contents/MacOS/ppapi_tests',
+        ],
+      },
+    }],
+    ['OS=="mac" or OS=="win"', {
+      'variables': {
+        'command': [
+          '../testing/test_env.py',
+          '<(PRODUCT_DIR)/interactive_ui_tests<(EXECUTABLE_SUFFIX)',
+          '--test-launcher-bot-mode',
+          '--asan=<(asan)',
+          '--lsan=<(lsan)',
+        ],
+      },
+    }],
+    ['OS=="win"', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/chrome_elf.dll',
+          '<(PRODUCT_DIR)/d3dcompiler_46.dll',
+          '<(PRODUCT_DIR)/ffmpegsumo.dll',
+          '<(PRODUCT_DIR)/libEGL.dll',
+          '<(PRODUCT_DIR)/libGLESv2.dll',
+          '<(PRODUCT_DIR)/osmesa.dll',
+          '<(PRODUCT_DIR)/plugins/npapi_test_plugin.dll',
+          '<(PRODUCT_DIR)/ppapi_tests.dll',
+        ],
+      },
+    }],
+    ['OS=="win" and target_arch=="ia32"', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/wow_helper.exe',
+        ],
+      },
+    }],
+    ['OS=="win" and (fastbuild==0 or fastbuild==1)', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/interactive_ui_tests.exe.pdb',
+        ],
+      },
+    }],
+    ['chromeos==1', {
+      'variables': {
+        'files': [
+          '../google_apis/test/',
+          '<(PRODUCT_DIR)/keyboard_resources.pak',
+          '<(PRODUCT_DIR)/libexif.so',
+          '<(PRODUCT_DIR)/nacl_helper',
+          '<(PRODUCT_DIR)/nacl_irt_x86_64.nexe',
+          '<(PRODUCT_DIR)/resources/chromeos/',
+        ],
+      },
+    }],
+  ],
+  'includes': [
+    '../base/base.isolate',
+    '../gin/v8.isolate',
+  ],
+}

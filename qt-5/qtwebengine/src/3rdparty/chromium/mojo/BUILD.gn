@@ -1,0 +1,39 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/ui.gni")
+
+group("mojo") {
+  # Meta-target, don't link into production code.
+  testonly = true
+  deps = [
+    ":tests",
+    "//mojo/common",
+    "//mojo/public",
+    "//mojo/services",
+  ]
+
+  if (is_android) {
+    deps += [
+      "//mojo/android",
+    ]
+  }
+}
+
+group("tests") {
+  testonly = true
+  deps = [
+    "//mojo/common:mojo_common_unittests",
+    "//mojo/converters/surfaces/tests:mojo_surfaces_lib_unittests",
+    "//mojo/edk/js/tests:js_unittests",
+    "//mojo/edk/system:mojo_message_pipe_perftests",
+    "//mojo/edk/system:mojo_system_unittests",
+    "//mojo/public/c/system/tests:perftests",
+    "//mojo/public/cpp/application/tests:mojo_public_application_unittests",
+    "//mojo/public/cpp/bindings/tests:mojo_public_bindings_unittests",
+    "//mojo/public/cpp/environment/tests:mojo_public_environment_unittests",
+    "//mojo/public/cpp/system/tests:mojo_public_system_unittests",
+    "//mojo/public/cpp/utility/tests:mojo_public_utility_unittests",
+  ]
+}
