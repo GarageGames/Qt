@@ -1,0 +1,26 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# GYP version: mojo/mojo.gyp:mojo_cc_support
+source_set("cc") {
+  deps = [
+    "//base",
+    "//cc",
+    "//cc/surfaces",
+    "//skia",
+    "//gpu/command_buffer/client:gles2_implementation",
+    "//mojo/converters/surfaces",
+    "//mojo/public/gles2:for_shared_library",
+    "//mojo/services/public/interfaces/surfaces",
+  ]
+
+  sources = [
+    "context_provider_mojo.cc",
+    "context_provider_mojo.h",
+    "direct_output_surface.cc",
+    "direct_output_surface.h",
+    "output_surface_mojo.cc",
+    "output_surface_mojo.h",
+  ]
+}

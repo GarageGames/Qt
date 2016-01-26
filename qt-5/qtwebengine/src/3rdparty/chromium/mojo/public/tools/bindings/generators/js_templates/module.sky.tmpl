@@ -1,0 +1,13 @@
+<!-- Copyright 2014 The Chromium Authors. All rights reserved.
+     Use of this source code is governed by a BSD-style license that can be
+     found in the LICENSE file. -->
+
+<import src="/mojo/public/sky/codec.sky" as="codec" />
+<import src="/mojo/public/sky/validator.sky" as="validator" />
+{%- for import in imports %}
+<import src="/{{import.module.path}}.sky" as="{{import.unique_name}}" />
+{%- endfor %}
+<script>
+{%- include "module_definition.tmpl" %}
+  module.exports = exports;
+</script>

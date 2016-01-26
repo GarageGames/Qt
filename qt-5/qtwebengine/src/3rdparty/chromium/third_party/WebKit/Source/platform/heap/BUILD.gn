@@ -1,0 +1,27 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+visibility = [ "//third_party/WebKit/Source/*" ]
+
+source_set("heap") {
+  sources = [
+    "AddressSanitizer.h",
+    "CallbackStack.cpp",
+    "CallbackStack.h",
+    "Handle.h",
+    "Heap.cpp",
+    "Heap.h",
+    "ThreadState.cpp",
+    "ThreadState.h",
+    "Visitor.cpp",
+    "Visitor.h",
+  ]
+
+  configs += [ "//third_party/WebKit/Source:config" ]
+
+  deps = [
+    "//third_party/WebKit/Source/platform/heap/asm",
+    "//third_party/icu",
+  ]
+}

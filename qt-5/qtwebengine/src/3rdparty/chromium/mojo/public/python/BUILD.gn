@@ -1,0 +1,64 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//third_party/cython/rules.gni")
+
+group("python") {
+  deps = [
+    ":base",
+    ":bindings",
+    ":system",
+  ]
+}
+
+# GYP version: mojo.gyp:mojo_python_system
+python_binary_module("system") {
+  python_base_module = "mojo"
+  sources = [
+    "mojo/c_core.pxd",
+    "mojo/c_environment.pxd",
+    "mojo/system.pyx",
+  ]
+  additional_sources = [
+    "src/python_system_helper.cc",
+    "src/python_system_helper.h",
+  ]
+  deps = [
+    "//mojo/public/c/environment",
+    "//mojo/public/c/system:for_shared_library",
+    "//mojo/public/cpp/environment:standalone",
+    "//mojo/public/cpp/system",
+    "//mojo/public/cpp/utility",
+    "//mojo/public/cpp/bindings:callback",
+    ":base",
+  ]
+}
+
+copy("base") {
+  sources = [
+    "mojo/__init__.py",
+  ]
+  outputs = [
+    "$root_out_dir/python/mojo/{{source_file_part}}",
+  ]
+}
+
+# GYP version: mojo.gyp:mojo_python_bindings
+copy("bindings") {
+  sources = [
+    "mojo/bindings/__init__.py",
+    "mojo/bindings/descriptor.py",
+    "mojo/bindings/messaging.py",
+    "mojo/bindings/promise.py",
+    "mojo/bindings/reflection.py",
+    "mojo/bindings/serialization.py",
+  ]
+  outputs = [
+    "$root_out_dir/python/mojo/bindings/{{source_file_part}}",
+  ]
+  deps = [
+    ":base",
+    ":system",
+  ]
+}

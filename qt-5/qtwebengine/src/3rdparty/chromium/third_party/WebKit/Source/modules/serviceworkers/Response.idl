@@ -1,0 +1,33 @@
+// Copyright 2014 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+// http://fetch.spec.whatwg.org/#response-class
+
+enum ResponseType { "basic", "cors", "default", "error", "opaque" };
+
+[
+    // FIXME: Add ctors for FormData and URLSearchParams response bodies.
+    Constructor(USVString body, optional Dictionary responseInitDict),
+    Constructor(Blob? body, optional Dictionary responseInitDict),
+    Constructor(ArrayBuffer input, optional Dictionary requestInitDict),
+    Constructor(ArrayBufferView input, optional Dictionary requestInitDict),
+    ConstructorCallWith=ExecutionContext,
+    RuntimeEnabled=ServiceWorker,
+    Exposed=ServiceWorker,
+    RaisesException=Constructor,
+    ActiveDOMObject,
+    GarbageCollected,
+    TypeChecking=Interface,
+] interface Response {
+    // FIXME: Implement redirect().
+    readonly attribute ResponseType type;
+    readonly attribute USVString url;
+    readonly attribute unsigned short status;
+    readonly attribute ByteString statusText;
+    readonly attribute Headers headers;
+
+    Response clone();
+};
+
+Response implements Body;

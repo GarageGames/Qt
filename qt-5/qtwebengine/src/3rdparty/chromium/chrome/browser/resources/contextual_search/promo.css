@@ -1,0 +1,113 @@
+/* Copyright 2014 The Chromium Authors. All rights reserved.
+   Use of this source code is governed by a BSD-style license that can be
+   found in the LICENSE file.
+*/
+@font-face {
+  font-family: 'Roboto2';
+  font-weight: 400;
+  src: local('Roboto'), local('Roboto2-Regular'),
+      url(/roboto.woff2) format('woff2'), url(/roboto.woff) format('woff');
+}
+
+body {
+  color: #414141;
+  font-family: 'Roboto2', sans-serif;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+a.colored-link {
+  color: rgb(66, 133, 244);
+}
+
+#button-container {
+  text-align: end;
+  width: 100%;
+}
+
+#container.hide {
+  -webkit-transform: scale(0.95);
+  -webkit-transition-duration: 130ms;
+  -webkit-transition-property: opacity, -webkit-transform;
+  opacity: 0;
+}
+
+#description {
+  font-size: 16px;
+  line-height: 1.4em;
+  margin: 24px 16px 4px 16px;
+}
+
+/* Some properties below can be overridden in landscape orientation. */
+#heading {
+  font-size: 24px;
+  letter-spacing: 1px;
+  margin-top: 0;
+  text-align: center;
+}
+#header-image {
+  height: 100px;
+  margin: 0 auto 24px auto;
+}
+.portrait {
+  display: block;
+}
+.landscape {
+  display: none;
+}
+
+/* Landscape */
+@media screen and (orientation:landscape) {
+  #heading {
+    padding-top: 16px;
+  }
+  #header-image {
+    margin: 0 24px;
+  }
+  .portrait {
+    display: none;
+  }
+  .landscape {
+    display: block;
+    float: left;
+  }
+  html[dir='rtl'] .landscape {
+    float: right;
+  }
+}
+
+button {
+  background: none;
+  border: none;
+  display: inline-block;
+  font-family: 'Roboto2', sans-serif;
+  font-size: 14px;
+  margin: 14px 0;
+  /* We use a slightly different top-bottom padding because Roboto has a
+     rendering bug which makes an extra padding to be rendered at the bottom of
+     text. */
+  padding: 17px 14px 13px 14px;
+  white-space: nowrap;
+}
+
+button .caption {
+  text-transform: uppercase;
+}
+
+#optin-button {
+  background: rgb(66, 133, 244);
+  background-clip: padding-box;
+  border-radius: 3px;
+  margin-right: 24px;
+}
+
+#optin-button .caption {
+  color: white;
+}
+
+#optout-button .caption {
+  color: rgb(66, 133, 244);
+}

@@ -1,0 +1,347 @@
+/* Copyright 2013 The Chromium Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file. */
+
+/* Don't use the main frame div when the error is in a subframe. */
+html[subframe] #main-frame-error {
+  display: none;
+}
+
+/* Don't use the subframe error div when the error is in a main frame. */
+html:not([subframe]) #sub-frame-error {
+  display: none;
+}
+
+#diagnose-button {
+  -webkit-margin-start: 0;
+  float: none;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+h1 {
+  margin-top: 0;
+}
+
+h2 {
+  color: #666;
+  font-size: 1.2em;
+  font-weight: normal;
+  margin: 10px 0;
+}
+
+a {
+  color: rgb(17, 85, 204);
+  text-decoration: none;
+}
+
+.icon {
+  -webkit-user-select: none;
+}
+
+.icon-generic {
+  /**
+   * Can't access chrome://theme/IDR_ERROR_NETWORK_GENERIC from an untrusted
+   * renderer process, so embed the resource manually.
+   */
+  content: -webkit-image-set(
+      url('default_100_percent/common/error_network_generic.png') 1x,
+      url('default_200_percent/common/error_network_generic.png') 2x);
+  height: 50px;
+  padding-top: 20px;
+  width: 41px;
+}
+
+.icon-offline {
+  content: -webkit-image-set(
+      url('default_100_percent/offline/100-error-offline.png') 1x,
+      url('default_200_percent/offline/200-error-offline.png') 2x);
+  height: 47px;
+  margin: 0 0 40px;
+  position: relative;
+  width: 44px;
+}
+
+#content-top {
+  margin: 20px;
+}
+
+#help-box-inner {
+  background-color: #f9f9f9;
+  border-top: 1px solid #EEE;
+  color: #444;
+  padding: 20px;
+  text-align: start;
+}
+
+#suggestion {
+  margin-top: 15px;
+}
+
+#short-suggestion {
+  margin-top: 5px;
+}
+
+#sub-frame-error-details {
+  color: #8F8F8F;
+<if expr="not is_android and not is_ios">
+  /* Not done on mobile for performance reasons. */
+  text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+</if>
+}
+
+[jscontent=failedUrl] {
+  overflow-wrap: break-word;
+}
+
+#search-container {
+  /* Prevents a space between controls. */
+  display: flex;
+  margin-top: 20px;
+}
+
+#search-box {
+  border: 1px solid #cdcdcd;
+  flex-grow: 1;
+  font-size: 16px;
+  height: 26px;
+  margin-right: 0;
+  padding: 1px 9px;
+}
+
+#search-box:focus {
+  border: 1px solid rgb(93, 154, 255);
+  outline: none;
+}
+
+#search-button {
+  border: none;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  box-shadow: none;
+  display: flex;
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  width: 60px;
+}
+
+#search-image {
+  content:
+      -webkit-image-set(
+          url('../../app/theme/default_100_percent/common/omnibox_search_button_loupe.png') 1x,
+          url('../../app/theme/default_200_percent/common/omnibox_search_button_loupe.png') 2x);
+  margin: auto;
+}
+
+.hidden {
+  display: none;
+}
+
+.suggestions {
+  margin-top: 18px;
+}
+
+.suggestion-header {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.suggestion-body {
+  color: #777;
+}
+
+.error-code {
+  color: #A0A0A0;
+  margin-top: 15px;
+}
+
+/* Increase line height at higher resolutions. */
+@media (min-width: 641px) and (min-height: 641px) {
+  #help-box-inner {
+    line-height: 18px;
+  }
+}
+
+/* Decrease padding at low sizes. */
+@media (max-width: 640px), (max-height: 640px) {
+  body {
+    margin: 15px;
+  }
+  h1 {
+    margin: 10px 0 15px;
+  }
+  #content-top {
+    margin: 15px;
+  }
+  #help-box-inner {
+    padding: 20px;
+  }
+  .suggestions {
+    margin-top: 10px;
+  }
+  .suggestion-header {
+    margin-bottom: 0;
+  }
+  .error-code {
+    margin-top: 10px;
+  }
+}
+
+/* Don't allow overflow when in a subframe. */
+html[subframe] body {
+  overflow: hidden;
+}
+
+#sub-frame-error {
+  -webkit-align-items: center;
+  background-color: #DDD;
+  display: -webkit-flex;
+  -webkit-flex-flow: column;
+  height: 100%;
+  -webkit-justify-content: center;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transition: background-color .2s ease-in-out;
+  width: 100%;
+}
+
+#sub-frame-error:hover {
+  background-color: #EEE;
+}
+
+#sub-frame-error .icon-generic {
+  margin: 0 0 16px;
+}
+
+#sub-frame-error-details {
+  margin: 0 10px;
+  text-align: center;
+  visibility: hidden;
+}
+
+/* Show details only when hovering. */
+#sub-frame-error:hover #sub-frame-error-details {
+  visibility: visible;
+}
+
+/* If the iframe is too small, always hide the error code. */
+/* TODO(mmenke): See if overflow: no-display works better, once supported. */
+@media (max-width: 200px), (max-height: 95px) {
+  #sub-frame-error-details {
+    display: none;
+  }
+}
+
+/* Adjust icon for small embedded frames in apps. */
+@media (max-height: 100px) {
+  #sub-frame-error .icon-generic {
+    height: auto;
+    margin: 0;
+    padding-top: 0;
+    width: 25px;
+  }
+}
+
+/* details-button is special; it's a <button> element that looks like a link. */
+#details-button {
+  background-color: inherit;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+  min-width: 0;
+  padding: 0;
+  text-decoration: underline;
+}
+
+/* Styles for platform dependent separation of controls and details button. */
+.suggested-left > #control-buttons,
+.suggested-right > #details-button  {
+  float: left;
+}
+
+.suggested-right > #control-buttons,
+.suggested-left > #details-button  {
+  float: right;
+}
+
+#details-button.singular {
+  float: none;
+}
+
+#buttons::after {
+  clear: both;
+  content: '';
+  display: block;
+  width: 100%;
+}
+
+/* Offline page */
+.offline .interstitial-wrapper {
+  color: #2b2b2b;
+  font-size: 1em;
+  line-height: 1.55;
+  margin: 100px auto 0;
+  max-width: 600px;
+  width: 100%;
+}
+
+.offline .runner-container {
+  height: 150px;
+  max-width: 600px;
+  overflow: hidden;
+  position: absolute;
+  top: 10px;
+  width: 44px;
+  z-index: 2;
+}
+
+.offline .runner-canvas {
+  height: 150px;
+  max-width: 600px;
+  opacity: 1;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+}
+
+.offline .controller {
+  background: rgba(247,247,247, .1);
+  height: 100vh;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  z-index: 1;
+}
+
+#offline-resources {
+  display: none;
+}
+
+@media (max-width: 400px) {
+  .suggested-left > #control-buttons,
+  .suggested-right > #control-buttons {
+    float: none;
+    margin: 50px 0 20px;
+  }
+}
+
+@media (max-height: 350px) {
+  h1 {
+    margin: 0 0 15px;
+  }
+
+  .icon-offline {
+    margin: 0 0 10px;
+  }
+
+  .interstitial-wrapper {
+    margin-top: 5%;
+  }
+
+  .nav-wrapper {
+    margin-top: 30px;
+  }
+}

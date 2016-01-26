@@ -1,0 +1,49 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# GYP version: mojo/mojo_services.gypi:mojo_view_manager_lib
+source_set("view_manager") {
+  sources = [
+    "lib/view.cc",
+    "lib/view_manager_client_factory.cc",
+    "lib/view_manager_client_impl.cc",
+    "lib/view_manager_client_impl.h",
+    "lib/view_manager_context.cc",
+    "lib/view_observer.cc",
+    "lib/view_private.cc",
+    "lib/view_private.h",
+    "view.h",
+    "view_manager.h",
+    "view_manager_client_factory.h",
+    "view_manager_context.h",
+    "view_manager_delegate.h",
+    "view_observer.h",
+    "window_manager_delegate.h",
+  ]
+
+  public_deps = [
+    ":common",
+  ]
+  deps = [
+    "//base",
+    "//mojo/public/c/gles2",
+    "//mojo/public/cpp/bindings:bindings",
+    "//mojo/public/interfaces/application",
+    "//mojo/services/public/interfaces/geometry",
+    "//mojo/services/public/interfaces/input_events:input_events",
+    "//mojo/services/public/interfaces/surfaces:surface_id",
+    "//mojo/services/public/interfaces/view_manager",
+    "//mojo/services/public/interfaces/window_manager",
+  ]
+}
+
+source_set("common") {
+  sources = [
+    "ids.h",
+    "types.h",
+  ]
+  public_deps = [
+    "//base",
+  ]
+}

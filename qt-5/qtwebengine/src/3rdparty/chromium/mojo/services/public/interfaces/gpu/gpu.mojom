@@ -1,0 +1,13 @@
+// Copyright 2014 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module mojo;
+
+import "mojo/services/public/interfaces/geometry/geometry.mojom";
+import "mojo/services/public/interfaces/gpu/command_buffer.mojom";
+
+interface Gpu {
+  CreateOnscreenGLES2Context(uint64 native_viewport_id, Size? size, CommandBuffer&? gles2_client);
+  CreateOffscreenGLES2Context(CommandBuffer&? gles2_client);
+};

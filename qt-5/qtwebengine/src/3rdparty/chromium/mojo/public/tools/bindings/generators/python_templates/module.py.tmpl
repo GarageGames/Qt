@@ -1,0 +1,57 @@
+{% from "module_macros.tmpl" import enum_values %}
+{% from "module_macros.tmpl" import struct_descriptor %}
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import mojo.bindings.descriptor as _descriptor
+import mojo.bindings.reflection as _reflection
+{% if imports %}
+
+{% for import in imports %}
+import {{import.python_module}}
+{% endfor %}
+{% endif %}
+{#--- Constants #}
+{% if module.constants %}
+
+{% for constant in module.constants %}
+{{constant|name}} = {{constant.value|expression_to_text}}
+{% endfor %}
+{% endif %}
+{% for enum in enums %}
+
+class {{enum|name}}(object):
+  __metaclass__ = _reflection.MojoEnumType
+  VALUES = {{enum_values(enum)|indent(2)}}
+{% endfor %}
+{% for struct in structs %}
+
+class {{struct|name}}(object):
+  __metaclass__ = _reflection.MojoStructType
+  DESCRIPTOR = {{struct_descriptor(struct)|indent(2)}}
+{% endfor %}
+{% for interface in interfaces %}
+
+class {{interface|name}}(object):
+  __metaclass__ = _reflection.MojoInterfaceType
+  DESCRIPTOR = {
+{%  if interface.client %}
+    'client': lambda: {{interface.qualified_client|fully_qualified_name}},
+{%  endif %}
+    'methods': [
+{%  for method in interface.methods %}
+      {
+        'name': '{{method|name}}',
+        'ordinal': {{method.ordinal}},
+{%    set request_struct = method|struct_from_method %}
+        'parameters': {{struct_descriptor(request_struct)|indent(8)}},
+{%    if method.response_parameters != None %}
+{%      set response_struct = method|response_struct_from_method %}
+        'responses': {{struct_descriptor(response_struct)|indent(8)}},
+{%    endif %}
+      },
+{%  endfor %}
+    ],
+  }
+{% endfor %}

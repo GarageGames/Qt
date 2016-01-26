@@ -1,0 +1,39 @@
+<div class="step right hidden" id="gaia-signin" role="group"
+    aria-live="polite" hidden>
+  <div class="step-contents">
+    <div id="gaia-signin-form-container">
+        <div id="login-box"><!-- Aligned with the login box in iframe --></div>
+        <iframe id="signin-frame" name="signin-frame" hidden
+          src="about:blank"
+          marginwidth="0"
+          marginheight="0"
+          frameborder="0"
+          scrolling="no"></iframe>
+    </div>
+    <div id="gaia-signin-divider" class="signin-divider" hidden></div>
+    <div id="signin-right" hidden>
+      <div id="gaia-signin-reason" class="signin-text"></div>
+      <div id="createAccount" class="signin-text"></div>
+      <div id="guestSignin" class="signin-text"></div>
+      <div id="createSupervisedUserPane" class="signin-text">
+        <div id="createSupervisedUserSeparator"></div>
+        <div id="createSupervisedUserLogo">
+          <img src="chrome://theme/IDR_SUPERVISED_USER_ICON">
+          <span i18n-content="createSupervisedUserFeatureName"></span>
+        </div>
+        <div id="createSupervisedUserLinkPlaceholder"></div>
+        <div id="createSupervisedUserNoManagerText" hidden></div>
+      </div>
+      <div id="consumerManagementEnrollment" class="signin-text"></div>
+    </div>
+  </div>
+  <div id="gaia-loading" class="step-loading">
+    <div class="throbber"></div>
+  </div>
+  <div id="enterprise-info-container" hidden>
+    <include src="enterprise_info.html">
+  </div>
+  <div id="saml-notice-container" hidden>
+    <span id="saml-notice-message"></span>
+  </div>
+</div>

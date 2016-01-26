@@ -1,0 +1,37 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+source_set("environment") {
+  sources = [
+    "async_waiter.h",
+    "logging.h",
+    "environment.h",
+  ]
+
+  public_deps = [ "//mojo/public/c/environment" ]
+
+  deps = [
+    "//mojo/public/cpp/bindings:callback",
+    "//mojo/public/cpp/system",
+  ]
+}
+
+source_set("standalone") {
+  sources = [
+    "lib/async_waiter.cc",
+    "lib/default_async_waiter.cc",
+    "lib/default_async_waiter.h",
+    "lib/default_logger.cc",
+    "lib/default_logger.h",
+    "lib/environment.cc",
+    "lib/logging.cc",
+  ]
+
+  public_deps = [ ":environment" ]
+
+  deps = [
+    "//mojo/public/c/environment",
+    "//mojo/public/cpp/utility",
+  ]
+}

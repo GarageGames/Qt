@@ -1,0 +1,146 @@
+// http://dev.chromium.org/blink/runtime-enabled-features
+//
+// This list is used to generate RuntimeEnabledFeatures.h/cpp which contains
+// a class that stores static enablers for all experimental features.
+//
+// Each feature can be assigned a "status":
+// status=stable -> Enable this in all Blink configurations.  We are committed to these APIs indefinitely.
+// status=experimental -> In-progress features, Web Developers might play with, but are not on by default in stable.
+// status=test -> Enabled in ContentShell for testing, otherwise off.
+// status=deprecated -> Alias for "test", will be removed at some point.
+// Features without a status are not enabled anywhere by default.
+//
+// "stable" features listed here should be rare, as anything which we've shipped stable
+// can have its runtime flag removed soon after.
+//
+// condition=ENABLE_NAME is used for wrapping features in compile-time
+// #if ENABLE(FEATURE) guards.  These are deprecated and should all be removed.
+
+AnyPointerMediaQueries status=experimental
+ApplicationCache status=stable
+AudioVideoTracks depends_on=Media, status=experimental
+AuthorShadowDOMForAnyElement
+BackgroundSync status=experimental
+BatteryStatus status=stable
+Beacon status=stable
+// Enable bleeding-edge code to make Blink draw content faster.
+// The changes enabled behind this flag are very likely to break lots of content.
+// ** DO NOT use this flag unless you know what you are doing. **
+BleedingEdgeFastPaths
+BlinkScheduler
+Bluetooth status=experimental
+ClientHintsDpr status=experimental
+CompositedSelectionUpdate
+ContextMenu status=experimental
+CredentialManager status=test
+Crypto status=stable
+CSS3Text status=experimental
+CSS3TextDecorations status=experimental
+CSSAnimationUnprefixed status=experimental
+CSSAttributeCaseSensitivity status=experimental
+CSSCompositing status=experimental
+CSSGridLayout status=experimental
+CSSMaskSourceType status=experimental
+CSSOMSmoothScroll status=experimental
+CSSTouchActionDelay status=test
+CSSViewport status=experimental
+// getPropertyCSSValue, CSSValue, etc. will be removed once layout tests no longer depend on them. crbug.com/331608
+CSSValue status=deprecated
+CustomSchemeHandler depends_on=NavigatorContentUtils, status=experimental
+Database status=stable
+DecodeToYUV status=experimental
+DeviceLight status=experimental
+DisplayList2dCanvas status=stable
+ForceDisplayList2dCanvas
+EncodingAPI status=stable
+EncryptedMedia status=test
+ExecCommandInJavaScript status=test
+ExperimentalCanvasFeatures status=test
+ExperimentalContentSecurityPolicyFeatures status=experimental
+FastMobileScrolling
+FileAPIBlobClose status=experimental
+FileSystem status=stable
+FullscreenUnprefixed status=test
+Geofencing status=experimental
+GeometryInterfaces status=test
+// Temporary setting to allow easy rollback of change to hover media feature.
+HoverMediaQueryKeywords status=stable
+ImageColorProfiles
+ImageDataConstructor status=experimental
+ImageRenderingPixelated status=experimental
+IMEAPI status=experimental
+IndexedDBExperimental status=experimental
+InputModeAttribute status=experimental
+LangAttributeAwareFormControlUI
+// Lax Mixed Content checking for WebSockets, XHR, etc. is deprecated and slated for removal. crbug.com/389089
+LaxMixedContentChecking status=deprecated
+LayerSquashing status=stable
+LocalStorage status=stable
+Media status=stable
+MediaCapture
+MediaController depends_on=Media, status=experimental
+MediaSource status=stable
+MediaSourceExperimental depends_on=MediaSource, status=experimental
+MediaStreamSpeech status=experimental
+MemoryInfoInWorkers status=experimental
+NavigationTransitions status=experimental
+NavigatorContentUtils
+NetworkInformation status=stable
+// CSS parser based on the css-syntax spec. crbug.com/330389
+NewCSSParser
+Notifications status=stable
+OrientationEvent
+// Only enabled on Android, and for certain layout tests on Linux.
+OverlayFullscreenVideo
+OverlayScrollbars
+PagePopup status=stable
+PathOpsSVGClipping status=experimental
+PeerConnection status=stable
+Picture status=stable
+PictureSizes status=stable
+PreciseMemoryInfo
+PrefixedEncryptedMedia status=stable
+// This feature is deprecated and we are evangalizing affected sites.
+// See https://crbug.com/346236 for current status.
+PrefixedVideoFullscreen status=stable
+Presentation status=test
+PseudoClassesInMatchingCriteriaInAuthorShadowTrees status=test
+PushMessaging status=experimental
+QuotaPromise status=experimental
+RegionBasedColumns status=experimental
+RequestAutocomplete status=test
+ScreenOrientation status=stable
+ScriptedSpeech status=stable
+// Implements documentElement.scrollTop/Left and bodyElement.scrollTop/Left
+// as per the spec, matching other Web engines.
+ScrollTopLeftInterop status=experimental
+// window.showModalDialog is deprecated and slated for removal. crbug.com/345831
+ShowModalDialog status=deprecated
+ServiceWorker status=stable
+ServiceWorkerCache status=stable
+ServiceWorkerOnFetch status=stable
+SessionStorage status=stable
+SharedWorker status=stable
+SlimmingPaint
+Stream status=experimental
+SubpixelFontScaling status=stable
+SubresourceIntegrity status=experimental
+TextBlob
+ThreadedParserDataReceiver status=experimental
+// Many websites disable mouse support when touch APIs are available.  We'd
+// like to enable this always but can't until more websites fix this bug.
+// Chromium sets this conditionally (eg. based on the presence of a
+// touchscreen) in ApplyWebPreferences.
+Touch status=stable
+TouchIconLoading
+UserSelectAll status=experimental
+WebAnimationsAPI status=experimental
+WebAnimationsPlaybackControl status=stable
+WebAudio condition=WEB_AUDIO, status=stable
+WebGLDraftExtensions status=experimental
+WebGLImageChromium
+WebMIDI status=test
+WebVTTRegions depends_on=Media, status=experimental
+V8IdleTasks
+XSLT status=stable
+SVG1DOM status=stable

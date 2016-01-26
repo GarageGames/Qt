@@ -1,0 +1,59 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+source_set("system_thunks") {
+  visibility = [
+    "//mojo/public/c/system:for_component",
+    "//mojo/public/c/system:for_shared_library",
+  ]
+
+  sources = [
+    "system_thunks.h",
+    "system_thunks.cc",
+  ]
+  defines = [ "MOJO_SYSTEM_IMPLEMENTATION" ]
+  deps = [ "//mojo/public/c/system" ]
+
+  # The GYP target analogous to this one builds this code into a
+  # static library.  When building for Android, both the GYP and GN
+  # builds add --exclude-libs=ALL globally, which means that all
+  # symbols in static libraries are excluded from export.  That's a
+  # problem, as code outside this target needs to be able to call
+  # MojoSetSystemThunks(). Therefore, the GYP target needs to specifiy
+  # that all dependent targets remove that link flag. Since GN uses a
+  # source_set here, this flag change is not needed.
+}
+
+# GYP version: mojo/mojo_public_gles2_for_loadable_module.gypi
+source_set("gles2_thunks") {
+  visibility = [ "//mojo/public/gles2:for_shared_library" ]
+
+  sources = [
+    "gles2_thunks.cc",
+    "gles2_thunks.h",
+    "gles2_impl_thunks.cc",
+    "gles2_impl_thunks.h",
+    "gles2_impl_chromium_texture_mailbox_thunks.cc",
+    "gles2_impl_chromium_texture_mailbox_thunks.h",
+    "gles2_impl_chromium_sync_point_thunks.cc",
+    "gles2_impl_chromium_sync_point_thunks.h",
+  ]
+
+  defines = [
+    "MOJO_GLES2_IMPLEMENTATION",
+  ]
+
+  configs += [ "//third_party/khronos:khronos_headers" ]
+
+  deps = [
+    "//mojo/public/c/gles2",
+    "//mojo/public/c/environment",
+    "//mojo/public/c/system",
+  ]
+
+  if (is_mac) {
+    # TODO(GYP): Make it a run-path dependent library.
+    # 'DYLIB_INSTALL_NAME_BASE': '@loader_path',
+  }
+}

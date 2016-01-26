@@ -1,0 +1,86 @@
+# Copyright (c) 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+{
+  'conditions': [
+    ['OS=="linux"', {
+      'variables': {
+        'command': [
+          './browser_tests_launcher.py',
+          '-f',
+          './browser_test_commands_linux.txt',
+          '-p',
+          '<(PRODUCT_DIR)',
+        ],
+        'files': [
+          '../xvfb.py',
+          './browser_tests_launcher.py',
+          './browser_test_commands_linux.txt',
+          '../../remoting/tools/internal/test_accounts.json',
+          '<(PRODUCT_DIR)/libffmpegsumo.so',
+          '<(PRODUCT_DIR)/libosmesa.so',
+          '<(PRODUCT_DIR)/nacl_irt_x86_64.nexe',
+        ],
+      },
+    }],
+    ['OS=="linux" and use_ozone==0', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/xdisplaycheck<(EXECUTABLE_SUFFIX)',
+        ],
+      },
+    }],
+     ['OS=="linux" or OS=="mac" or OS=="win"', {
+      'variables': {
+        'files': [
+          '../test_env.py',
+          '<(PRODUCT_DIR)/browser_tests<(EXECUTABLE_SUFFIX)',
+          '<(PRODUCT_DIR)/remoting/remoting.webapp/',
+          '<(PRODUCT_DIR)/resources.pak',
+        ],
+        'read_only': 1,
+      },
+    }],
+    ['OS=="linux" or OS=="win"', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/chrome_100_percent.pak',
+          '<(PRODUCT_DIR)/locales/en-US.pak',
+        ],
+      },
+    }],
+    ['OS=="win"', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/chrome_elf.dll',
+          '<(PRODUCT_DIR)/ffmpegsumo.dll',
+        ],
+      },
+    }],
+    ['OS=="mac"', {
+      'variables': {
+        'files': [
+          '<(PRODUCT_DIR)/<(mac_product_name).app/',
+          '<(PRODUCT_DIR)/exif.so',
+          '<(PRODUCT_DIR)/ffmpegsumo.so',
+        ],
+      },
+    }],
+    ['OS=="mac" or OS=="win"', {
+      'variables': {
+        'command': [
+          '../test_env.py',
+          '<(PRODUCT_DIR)/browser_tests<(EXECUTABLE_SUFFIX)',
+          '--gtest_filter=RemoteDesktopBrowserTest.MANUAL_Launch',
+          '--run-manual',
+          '--ui-test-action-timeout=100000',
+          '--webapp-unpacked=<(PRODUCT_DIR)/remoting/remoting.webapp',
+          '--extension-name=Chromoting',
+        ],
+      },
+    }],
+  ],
+  'includes': [
+    '../../base/base.isolate',
+  ],
+}

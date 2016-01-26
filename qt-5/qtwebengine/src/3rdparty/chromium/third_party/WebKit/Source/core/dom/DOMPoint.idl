@@ -1,0 +1,15 @@
+// Copyright 2014 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+[
+    Constructor(optional DOMPointInit point),
+    Constructor(unrestricted double x, unrestricted double y,
+                optional unrestricted double z = 0, optional unrestricted double w = 1),
+    RuntimeEnabled=GeometryInterfaces,
+] interface DOMPoint : DOMPointReadOnly {
+    attribute unrestricted double x;
+    attribute unrestricted double y;
+    attribute unrestricted double z;
+    attribute unrestricted double w;
+};

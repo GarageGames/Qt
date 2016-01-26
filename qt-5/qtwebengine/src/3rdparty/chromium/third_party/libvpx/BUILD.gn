@@ -1,0 +1,309 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/arm.gni")
+import("//build/config/android/config.gni")
+import("//third_party/libvpx/libvpx_srcs.gni")
+import("//third_party/yasm/yasm_assemble.gni")
+
+if (is_posix && !is_mac) {
+  os_category = "linux"
+} else {
+  os_category = os
+}
+
+# Sets the architecture name for building libvpx.
+if (cpu_arch == "x86") {
+  cpu_arch_full = "ia32"
+} else if (cpu_arch == "x64") {
+  if (is_msan) {
+    cpu_arch_full = "generic"
+  } else {
+    cpu_arch_full = "x64"
+  }
+} else if (cpu_arch == "arm") {
+  if (arm_use_neon) {
+    cpu_arch_full = "arm-neon"
+  } else if (is_android) {
+    cpu_arch_full = "arm-neon-cpu-detect"
+  } else {
+    cpu_arch_full = "arm"
+  }
+} else {
+  cpu_arch_full = cpu_arch
+}
+
+config("libvpx_config") {
+  include_dirs = [
+    "//third_party/libvpx/source/config",
+    "//third_party/libvpx/source/config/$os_category/$cpu_arch_full",
+    "//third_party/libvpx/source/libvpx",
+    "$root_gen_dir/third_party/libvpx", # Provides vpx_rtcd.h.
+  ]
+  if (!is_win) {
+    cflags = [ "-Wno-unused-function", "-Wno-sign-compare" ]
+  }
+}
+
+# This config is applied to targets that depend on libvpx.
+config("libvpx_external_config") {
+  include_dirs = [
+    "//third_party/libvpx/source/libvpx",
+  ]
+}
+
+executable("libvpx_obj_int_extract") {
+  sources = [
+    "//third_party/libvpx/source/libvpx/build/make/obj_int_extract.c"
+  ]
+  configs += [ ":libvpx_config" ]
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [ "//build/config/compiler:no_chromium_code" ]
+  if (is_android_webview_build) {
+    defines += [ "FORCE_PARSE_ELF" ]
+    include_dirs += [ "//third_party/libvpx/include" ]
+  }
+}
+
+# A library whose object files contain integers to be extracted.
+static_library("libvpx_asm_offsets") {
+  sources = [
+    "//third_party/libvpx/source/libvpx/vp8/encoder/vp8_asm_enc_offsets.c",
+    "//third_party/libvpx/source/libvpx/vpx_scale/vpx_scale_asm_offsets.c"
+  ]
+  configs += [ ":libvpx_config" ]
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [ "//build/config/compiler:no_chromium_code" ]
+  if (is_clang) {
+    cflags = [ "-Wno-unused-function" ]
+  }
+}
+
+# This works only on POSIX to extract integer values from an object file.
+template("obj_int_extract") {
+  action(target_name) {
+    script = "//third_party/libvpx/obj_int_extract.py"
+    bin_label = "//third_party/libvpx($host_toolchain)"
+
+    args = [
+      "-e",
+      "./" + rebase_path(get_label_info(bin_label, "root_out_dir") +
+                         "/libvpx_obj_int_extract",
+                         root_build_dir)
+    ]
+
+    if (cpu_arch == "arm") {
+      args += [ "-f", "gas" ]
+    } else {
+      args += [ "-f", "rvds" ]
+    }
+
+    if (is_win) {
+      obj_extension = "obj"
+    } else {
+      obj_extension = "o"
+    }
+
+    args += [
+      "-b",
+      rebase_path(get_label_info(":libvpx_asm_offsets", "target_out_dir")) +
+          "/" + invoker.src_dir + "/libvpx_asm_offsets." +
+          invoker.obj_file_root + ".${obj_extension}"
+    ]
+    out_file = "$target_gen_dir/" + invoker.obj_file_root + ".asm"
+    args += [ "-o", rebase_path(out_file) ]
+    outputs = [ out_file ]
+    deps = [
+      ":libvpx_asm_offsets",
+      ":libvpx_obj_int_extract($host_toolchain)"
+    ]
+  }
+}
+
+obj_int_extract("gen_asm_offsets_vp8") {
+  src_dir = "source/libvpx/vp8/encoder"
+  obj_file_root = "vp8_asm_enc_offsets"
+}
+
+obj_int_extract("gen_asm_offsets_scale") {
+  src_dir = "source/libvpx/vpx_scale"
+  obj_file_root = "vpx_scale_asm_offsets"
+}
+
+if (cpu_arch == "x86" || cpu_arch == "x64") {
+  yasm_assemble("libvpx_yasm") {
+    if (cpu_arch == "x86") {
+      sources = libvpx_srcs_x86_assembly
+    } else if (cpu_arch == "x64") {
+      sources = libvpx_srcs_x86_64_assembly
+    }
+
+    defines = [ "CHROMIUM" ]
+    include_dirs = [
+      "//third_party/libvpx/source/config/$os_category/$cpu_arch_full",
+      "//third_party/libvpx/source/config",
+     "//third_party/libvpx/source/libvpx",
+      target_gen_dir
+    ]
+    deps = [
+      ":gen_asm_offsets_vp8",
+      ":gen_asm_offsets_scale",
+    ]
+  }
+}
+
+static_library("libvpx_intrinsics_mmx") {
+  configs += [ ":libvpx_config" ]
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [ "//build/config/compiler:no_chromium_code" ]
+  if (!is_win) {
+    cflags = [ "-mmmx" ]
+  }
+  if (cpu_arch == "x86") {
+    sources = libvpx_srcs_x86_mmx
+  } else if (cpu_arch == "x64") {
+    sources = libvpx_srcs_x86_64_mmx
+  }
+}
+
+static_library("libvpx_intrinsics_sse2") {
+  configs += [ ":libvpx_config" ]
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [ "//build/config/compiler:no_chromium_code" ]
+  if (!is_win) {
+    cflags = [ "-msse2" ]
+  }
+  if (cpu_arch == "x86") {
+    sources = libvpx_srcs_x86_sse2
+  } else if (cpu_arch == "x64") {
+    sources = libvpx_srcs_x86_64_sse2
+  }
+}
+
+static_library("libvpx_intrinsics_ssse3") {
+  configs += [ ":libvpx_config" ]
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [ "//build/config/compiler:no_chromium_code" ]
+  if (!is_win) {
+    cflags = [ "-mssse3" ]
+  }
+  if (cpu_arch == "x86") {
+    sources = libvpx_srcs_x86_ssse3
+  } else if (cpu_arch == "x64") {
+    sources = libvpx_srcs_x86_64_ssse3
+  }
+}
+
+static_library("libvpx_intrinsics_sse4_1") {
+  configs += [ ":libvpx_config" ]
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [ "//build/config/compiler:no_chromium_code" ]
+  if (!is_win) {
+    cflags = [ "-msse4.1" ]
+  }
+  if (cpu_arch == "x86") {
+    sources = libvpx_srcs_x86_sse4_1
+  } else if (cpu_arch == "x64") {
+    sources = libvpx_srcs_x86_64_sse4_1
+  }
+}
+
+if (cpu_arch_full == "arm-neon-cpu-detect") {
+  static_library("libvpx_intrinsics_neon") {
+    configs -= [ "//build/config/compiler:compiler_arm_fpu" ]
+    configs += [ ":libvpx_config" ]
+    cflags = [ "-mfpu=neon" ]
+    sources = libvpx_srcs_arm_neon_cpu_detect_neon
+  }
+}
+
+# Converts ARM assembly files to GAS style.
+if (cpu_arch == "arm") {
+  action_foreach("convert_arm_assembly") {
+    script = "//third_party/libvpx/run_perl.py"
+    if (cpu_arch_full == "arm-neon") {
+      sources = libvpx_srcs_arm_neon_assembly
+    } else if (cpu_arch_full == "arm-neon-cpu-detect") {
+      sources = libvpx_srcs_arm_neon_cpu_detect_assembly
+    } else {
+      sources = libvpx_srcs_arm_assembly
+    }
+    outputs = [ "$target_gen_dir/{{source_name_part}}.S" ]
+    args = [
+      "-s",
+      rebase_path("//third_party/libvpx/source/libvpx/build/make/ads2gas.pl",
+                  root_build_dir),
+      "-i", "{{source}}",
+      "-o", rebase_path("$target_gen_dir/{{source_name_part}}.S")
+    ]
+  }
+
+  static_library("libvpx_assembly_arm") {
+    sources = get_target_outputs(":convert_arm_assembly")
+    configs -= [ "//build/config/compiler:compiler_arm_fpu" ]
+    configs += [ ":libvpx_config" ]
+    if (cpu_arch_full == "arm-neon" ||
+        cpu_arch_full == "arm-neon-cpu-detect") {
+      cflags = [ "-mfpu=neon" ]
+    }
+    deps = [
+      ":convert_arm_assembly",
+      ":gen_asm_offsets_vp8",
+      ":gen_asm_offsets_scale",
+    ]
+  }
+}
+
+static_library("libvpx") {
+  if (!is_debug && is_win && is_official_build) {
+    configs -= [ "//build/config/compiler:optimize" ]
+    configs += [ "//build/config/compiler:optimize_max" ]
+  }
+
+  if (cpu_arch == "x86") {
+    sources = libvpx_srcs_x86
+  } else if (cpu_arch == "x64") {
+    if (is_msan) {
+      sources = libvpx_srcs_generic
+    } else {
+      sources = libvpx_srcs_x86_64
+    }
+  } else if (cpu_arch == "mipsel") {
+    sources = libvpx_srcs_generic
+  } else if (cpu_arch == "arm") {
+    if (arm_use_neon) {
+      sources = libvpx_srcs_arm_neon
+    } else if (is_android) {
+      sources = libvpx_srcs_arm_neon_cpu_detect
+    } else {
+      sources = libvpx_srcs_arm
+    }
+  } else if (cpu_arch == "arm64") {
+    sources = libvpx_srcs_arm64
+  }
+  configs += [ ":libvpx_config" ]
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = []
+  if (cpu_arch == "x86" || (cpu_arch == "x64" && !is_msan)) {
+    deps += [
+      ":libvpx_yasm",
+      ":libvpx_intrinsics_mmx",
+      ":libvpx_intrinsics_sse2",
+      ":libvpx_intrinsics_ssse3",
+      ":libvpx_intrinsics_sse4_1",
+    ]
+  }
+  if (cpu_arch_full == "arm-neon-cpu-detect") {
+    deps += [ ":libvpx_intrinsics_neon" ]
+  }
+  if (is_android) {
+    deps += [ "//third_party/android_tools:cpu_features" ]
+  }
+  if (cpu_arch == "arm") {
+    deps += [ ":libvpx_assembly_arm" ]
+  }
+
+  public_configs = [ ":libvpx_external_config" ]
+}

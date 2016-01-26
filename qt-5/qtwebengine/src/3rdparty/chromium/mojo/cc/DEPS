@@ -1,0 +1,5 @@
+include_rules = [
+  "+cc",
+  "-cc/blink",
+  "+gpu/command_buffer/client",
+]

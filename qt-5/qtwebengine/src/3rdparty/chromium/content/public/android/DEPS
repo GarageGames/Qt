@@ -1,0 +1,10 @@
+include_rules = [
+
+  # The util files in content/public/test/android are needed by
+  # content/public/android/javatests.
+  "+content/public/test/android",
+  # ContentShellActivity is needed for running ContentView.
+  "+content/shell/android",
+  # Mojo is needed for Mojo service registry kept in the browser.
+  "+mojo/android",
+]

@@ -1,0 +1,26 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/ui.gni")
+
+group("services") {
+  deps = [
+    "//mojo/services/public/interfaces/clipboard",
+    "//mojo/services/public/interfaces/content_handler",
+    "//mojo/services/public/interfaces/geometry",
+    "//mojo/services/public/interfaces/input_events",
+    "//mojo/services/public/interfaces/native_viewport",
+    "//mojo/services/public/interfaces/navigation",
+    "//mojo/services/public/interfaces/network",
+    "//mojo/services/public/interfaces/surfaces",
+    "//mojo/services/public/interfaces/view_manager",
+  ]
+
+  if (!is_component_build) {
+    deps += [
+      "//mojo/services/html_viewer",
+      "//mojo/services/network",
+    ]
+  }
+}

@@ -1,0 +1,397 @@
+// Copyright 2014 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+// These should be kept in sync with third_party/WebKit/public/web/WebAXEnums.h
+// until the Chromium and Blink trees are merged.
+[camel_case_enum_to_string=true] namespace ui {
+
+  // For new entries to the following three enums, also add to
+  // chrome/common/extensions/api/automation.idl.
+  //
+  // Explanation of the comments next to these events:
+  //
+  // Web: this event is only used in web content. Unless a specific platform
+  //      is specified, it fires a native event on multiple platforms.
+  //
+  // Native: this event is only used in native UI.
+  //
+  // Implicit: it would be cleaner if we just updated the AX node
+  //     and each platform fired the appropriate events to indicate which
+  //     platform-specific attributes changed.
+  //
+  // If unspecified, the event is used across web and native on multiple
+  // platforms.
+  enum AXEvent {
+    activedescendantchanged,   // Web
+    alert,
+    aria_attribute_changed,    // Implicit
+    autocorrection_occured,    // Unknown: http://crbug.com/392498
+    blur,                      // Remove: http://crbug.com/392502
+    checked_state_changed,     // Implicit
+    children_changed,
+    focus,
+    hide,                      // Remove: http://crbug.com/392502
+    hover,
+    invalid_status_changed,    // Implicit
+    layout_complete,           // Web
+    live_region_changed,       // Web
+    load_complete,             // Web
+    location_changed,          // Web
+    menu_end,                  // Native / Win
+    menu_list_item_selected,   // Web
+    menu_list_value_changed,   // Web
+    menu_popup_end,            // Native / Win
+    menu_popup_start,          // Native / Win
+    menu_start,                // Native / Win
+    row_collapsed,             // Web / Mac
+    row_count_changed,         // Web / Mac
+    row_expanded,              // Web / Mac
+    scroll_position_changed,   // Web
+    scrolled_to_anchor,        // Web
+    selected_children_changed, // Web
+    selection,                 // Native
+    selection_add,             // Native
+    selection_remove,          // Native
+    show,                      // Remove: http://crbug.com/392502
+    text_changed,
+    text_selection_changed,
+    tree_changed,              // Accessibility tree changed. Don't
+                               // explicitly fire an accessibility event,
+                               // only implicitly due to the change.
+    value_changed
+  };
+
+  enum AXRole {
+    alert_dialog,
+    alert,
+    annotation,
+    application,
+    article,
+    banner,
+    blockquote,
+    browser,
+    busy_indicator,
+    button,
+    button_drop_down,
+    canvas,
+    cell,
+    check_box,
+    client,
+    color_well,
+    column_header,
+    column,
+    combo_box,
+    complementary,
+    content_info,
+    date,
+    date_time,
+    definition,
+    description_list_detail,
+    description_list,
+    description_list_term,
+    desktop,
+    details,
+    dialog,
+    directory,
+    disclosure_triangle,
+    div,
+    document,
+    drawer,
+    editable_text,
+    embedded_object,
+    figcaption,
+    figure,
+    footer,
+    form,
+    grid,
+    group,
+    grow_area,
+    heading,
+    help_tag,
+    horizontal_rule,
+    iframe,
+    ignored,
+    image_map_link,
+    image_map,
+    image,
+    incrementor,
+    inline_text_box,
+    label_text,
+    legend,
+    link,
+    list_box_option,
+    list_box,
+    list_item,
+    list_marker,
+    list,
+    location_bar,
+    log,
+    main,
+    marquee,
+    math,
+    matte,
+    menu_bar,
+    menu_button,
+    menu_item,
+    menu_item_check_box,
+    menu_item_radio,
+    menu_list_option,
+    menu_list_popup,
+    menu,
+    meter,
+    navigation,
+    note,
+    outline,
+    pane,
+    paragraph,
+    pop_up_button,
+    pre,
+    presentational,
+    progress_indicator,
+    radio_button,
+    radio_group,
+    region,
+    root_web_area,
+    row_header,
+    row,
+    ruler_marker,
+    ruler,
+    svg_root,
+    scroll_area,
+    scroll_bar,
+    seamless_web_area,
+    search,
+    sheet,
+    slider,
+    slider_thumb,
+    spin_button_part,
+    spin_button,
+    split_group,
+    splitter,
+    static_text,
+    status,
+    system_wide,
+    tab_group,
+    tab_list,
+    tab_panel,
+    tab,
+    table_header_container,
+    table,
+    text_area,
+    text_field,
+    time,
+    timer,
+    title_bar,
+    toggle_button,
+    toolbar,
+    tree_grid,
+    tree_item,
+    tree,
+    unknown,
+    tooltip,
+    value_indicator,
+    web_area,
+    web_view,
+    window
+  };
+
+  // TODO(dmazzoni): switch content/ to use AX_STATE_DISABLED instead of
+  // !AX_STATE_ENABLED, and AX_STATE_EDITABLE instead of !AX_STATE_READONLY.
+  enum AXState {
+    busy,
+    checked,
+    collapsed,
+    default,
+    disabled,  // ui/views only
+    editable,  // ui/views only
+    enabled,   // content only
+    expanded,
+    focusable,
+    focused,
+    haspopup,
+    hovered,
+    indeterminate,
+    invisible,
+    linked,
+    multiselectable,
+    offscreen,
+    pressed,
+    protected,
+    read_only,
+    required,
+    selectable,
+    selected,
+    vertical,
+    visited
+  };
+
+  [cpp_enum_prefix_override="ax_attr"] enum AXStringAttribute {
+    // Document attributes.
+    doc_url,
+    doc_title,
+    doc_mimetype,
+    doc_doctype,
+
+    // Attributes that could apply to any node.
+    access_key,
+    action,
+    container_live_relevant,
+    container_live_status,
+    description,
+    display,
+    help,
+    html_tag,
+    name,
+    live_relevant,
+    live_status,
+    role,
+    shortcut,
+    text_input_type,
+    url,
+    value
+  };
+
+  [cpp_enum_prefix_override="ax_attr"] enum AXIntAttribute {
+    // Scrollable container attributes.
+    scroll_x,
+    scroll_x_min,
+    scroll_x_max,
+    scroll_y,
+    scroll_y_min,
+    scroll_y_max,
+
+    // Editable text attributes.
+    text_sel_start,
+    text_sel_end,
+
+    // Table attributes.
+    table_row_count,
+    table_column_count,
+    table_header_id,
+
+    // Table row attributes.
+    table_row_index,
+    table_row_header_id,
+
+    // Table column attributes.
+    table_column_index,
+    table_column_header_id,
+
+    // Table cell attributes.
+    table_cell_column_index,
+    table_cell_column_span,
+    table_cell_row_index,
+    table_cell_row_span,
+
+    // Tree control attributes.
+    hierarchical_level,
+
+    // Relationships between this element and other elements.
+    title_ui_element,
+    activedescendant_id,
+
+    // Color value for AX_ROLE_COLOR_WELL, each component is 0..255
+    color_value_red,
+    color_value_green,
+    color_value_blue,
+
+    // Inline text attributes.
+    text_direction,
+
+    // Uniquely identifies an AXTree.
+    tree_id,
+
+    // Identifies a child tree which this node hosts.
+    child_tree_id
+  };
+
+  [cpp_enum_prefix_override="ax_attr"] enum AXFloatAttribute {
+    // Document attributes.
+    doc_loading_progress,
+
+    // Range attributes.
+    value_for_range,
+    min_value_for_range,
+    max_value_for_range
+  };
+
+  [cpp_enum_prefix_override="ax_attr"] enum AXBoolAttribute {
+    // Document attributes.
+    doc_loaded,
+
+    // True if a checkbox or radio button is in the "mixed" state.
+    button_mixed,
+
+    // Live region attributes.
+    container_live_atomic,
+    container_live_busy,
+    live_atomic,
+    live_busy,
+
+    // ARIA readonly flag.
+    aria_readonly,
+
+    // Writeable attributes
+    can_set_value,
+
+    // If this is set, all of the other fields in this struct should
+    // be ignored and only the locations should change.
+    update_location_only,
+
+    // Set on a canvas element if it has fallback content.
+    canvas_has_fallback,
+
+    // Set if this node is the host of an external AXTree, for
+    // example a web view that's a child of a native view, or a
+    // web iframe that's the child of another web frame.
+    is_ax_tree_host
+  };
+
+  [cpp_enum_prefix_override="ax_attr"] enum AXIntListAttribute {
+    // Ids of nodes that are children of this node logically, but are
+    // not children of this node in the tree structure. As an example,
+    // a table cell is a child of a row, and an 'indirect' child of a
+    // column.
+    indirect_child_ids,
+
+    // Relationships between this element and other elements.
+    controls_ids,
+    describedby_ids,
+    flowto_ids,
+    labelledby_ids,
+    owns_ids,
+
+    // Character indices where line breaks occur.
+    line_breaks,
+
+    // For a table, the cell ids in row-major order, with duplicate entries
+    // when there's a rowspan or colspan, and with -1 for missing cells.
+    // There are always exactly rows * columns entries.
+    cell_ids,
+
+    // For a table, the unique cell ids in row-major order of their first
+    // occurrence.
+    unique_cell_ids,
+
+    // For inline text. This is the pixel position of the end of this
+    // character within the bounding rectangle of this object, in the
+    // direction given by AX_ATTR_TEXT_DIRECTION. For example, for left-to-right
+    // text, the first offset is the right coordinate of the first character
+    // within the object's bounds, the second offset is the right coordinate
+    // of the second character, and so on.
+    character_offsets,
+
+    // For inline text. These int lists must be the same size; they represent
+    // the start and end character index of each word within this text.
+    word_starts,
+    word_ends
+  };
+
+  [cpp_enum_prefix_override="ax"] enum AXTextDirection {
+    text_direction_lr,
+    text_direction_rl,
+    text_direction_tb,
+    text_direction_bt
+  };
+};

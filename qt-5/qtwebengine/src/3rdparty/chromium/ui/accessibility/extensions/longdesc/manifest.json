@@ -1,0 +1,23 @@
+{
+  "name": "__MSG_appName__",
+  "version": "0.1",
+  "description": "__MSG_appDesc__",
+  "background": {
+    "scripts": [ "background.js" ]
+  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["lastRightClick.js"]
+  }],
+  "icons": {
+    "16": "icon.png"
+  },
+  "permissions": [
+    "tabs",
+    "contextMenus",
+    "storage",
+    "<all_urls>"
+  ],
+  "manifest_version": 2,
+  "options_page": "options.html"
+}

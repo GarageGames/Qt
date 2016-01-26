@@ -1,0 +1,35 @@
+// Copyright 2014 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+// http://fetch.spec.whatwg.org/#request-class
+
+enum RequestMode { "same-origin", "no-cors", "cors" };
+enum RequestCredentials { "omit", "same-origin", "include" };
+
+[
+    Constructor(USVString input, optional Dictionary requestInitDict),
+    Constructor(Request input, optional Dictionary requestInitDict),
+    ConstructorCallWith=ExecutionContext,
+    RuntimeEnabled=ServiceWorker,
+    Exposed=ServiceWorker,
+    RaisesException=Constructor,
+    ActiveDOMObject,
+    GarbageCollected,
+    TypeChecking=Interface,
+] interface Request {
+    readonly attribute ByteString method;
+    readonly attribute USVString url;
+    readonly attribute Headers headers;
+
+    readonly attribute DOMString referrer;
+    readonly attribute RequestMode mode;
+    readonly attribute RequestCredentials credentials;
+
+    Request clone();
+
+    // FIXME: Implement the following:
+    // readonly attribute RequestContext context;
+};
+
+Request implements Body;
