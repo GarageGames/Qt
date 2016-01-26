@@ -1,0 +1,95 @@
+/****************************************************************************
+**
+** Copyright (C) 2015 The Qt Company Ltd.
+** Contact: http://www.qt.io/licensing/
+**
+** This file is part of the QtCanvas3D module of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:LGPL3$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see http://www.qt.io/terms-conditions. For further
+** information use the contact form at http://www.qt.io/contact-us.
+**
+** GNU Lesser General Public License Usage
+** Alternatively, this file may be used under the terms of the GNU Lesser
+** General Public License version 3 as published by the Free Software
+** Foundation and appearing in the file LICENSE.LGPLv3 included in the
+** packaging of this file. Please review the following information to
+** ensure the GNU Lesser General Public License version 3 requirements
+** will be met: https://www.gnu.org/licenses/lgpl.html.
+**
+** GNU General Public License Usage
+** Alternatively, this file may be used under the terms of the GNU
+** General Public License version 2.0 or later as published by the Free
+** Software Foundation and appearing in the file LICENSE.GPL included in
+** the packaging of this file. Please review the following information to
+** ensure the GNU General Public License version 2.0 requirements will be
+** met: http://www.gnu.org/licenses/gpl-2.0.html.
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \example canvas3d/interaction
+    \since QtCanvas3D 1.0
+    \title Interaction Example
+    \ingroup qtcanvas3d-examples
+    \brief Interact with an object in canvas using Qt Quick Controls
+
+    The Interaction Example concentrates on the interaction between
+    \l {Qt Quick Controls} and the objects displayed in Canvas3D. This
+    also demonstrates drawing the same object in three different ways.
+
+    \image interaction-example.png
+
+    \section1 The Controls
+
+    First, we need to import Qt Quick Controls and Layouts:
+
+    \snippet canvas3d/interaction/qml/interaction/main.qml 0
+
+    Then, we add a RowLayout to the main component to easily add the
+    controls side-by-side:
+
+    \snippet canvas3d/interaction/qml/interaction/main.qml 1
+
+    And then we add three sliders to the layout. Here's the one for
+    controlling x-axis rotation:
+
+    \snippet canvas3d/interaction/qml/interaction/main.qml 2
+
+    \section1 Interaction
+
+    First we need to define some properties in the Canvas3D for the
+    rotations:
+
+    \snippet canvas3d/interaction/qml/interaction/main.qml 3
+
+    The \c onValueChanged signal handlers of the \l[QML]{Slider} components
+    are connected to the above properties. Here's the connection in x-rotation
+    slider as an example:
+
+    \snippet canvas3d/interaction/qml/interaction/main.qml 4
+
+    Then, on the JavaScript side, we just use the Canvas3D properties directly
+    when setting the modelview matrix rotations:
+
+    \snippet canvas3d/interaction/qml/interaction/interaction.js 0
+
+    \section1 Three Ways of Drawing
+
+    The actual drawing is no different from any situation where
+    the same object is drawn multiple times. Only in this case we use a
+    different drawing mode for each:
+
+    \snippet canvas3d/interaction/qml/interaction/interaction.js 1
+    \dots 0
+    \snippet canvas3d/interaction/qml/interaction/interaction.js 2
+    \dots 0
+    \snippet canvas3d/interaction/qml/interaction/interaction.js 3
+ */

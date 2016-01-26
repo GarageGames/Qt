@@ -1,0 +1,108 @@
+/****************************************************************************
+**
+** Copyright (C) 2015 The Qt Company Ltd.
+** Contact: http://www.qt.io/licensing/
+**
+** This file is part of the QtCanvas3D module of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:LGPL3$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see http://www.qt.io/terms-conditions. For further
+** information use the contact form at http://www.qt.io/contact-us.
+**
+** GNU Lesser General Public License Usage
+** Alternatively, this file may be used under the terms of the GNU Lesser
+** General Public License version 3 as published by the Free Software
+** Foundation and appearing in the file LICENSE.LGPLv3 included in the
+** packaging of this file. Please review the following information to
+** ensure the GNU Lesser General Public License version 3 requirements
+** will be met: https://www.gnu.org/licenses/lgpl.html.
+**
+** GNU General Public License Usage
+** Alternatively, this file may be used under the terms of the GNU
+** General Public License version 2.0 or later as published by the Free
+** Software Foundation and appearing in the file LICENSE.GPL included in
+** the packaging of this file. Please review the following information to
+** ensure the GNU General Public License version 2.0 requirements will be
+** met: http://www.gnu.org/licenses/gpl-2.0.html.
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \example canvas3d/framebuffer
+    \since QtCanvas3D 1.0
+    \title Framebuffer Example
+    \ingroup qtcanvas3d-examples
+    \brief Render into a framebuffer and use it as a texture
+
+    The Framebuffer Example shows how to render into a framebuffer, create a
+    texture of it, and apply the texture to an object in normal on-screen
+    rendering.
+
+    The example has a moving and rotating cube, which has another textured
+    cube drawn into it via the framebuffer object. The cube in the framebuffer
+    can be rotated using \l [QML] {Slider}s from \l {Qt Quick Controls}.
+
+    \image framebuffer-example.png
+
+    \section1 Preparing the Framebuffer
+
+    We first define the variables we need for the render-to-texture
+    framebuffer:
+
+    \snippet canvas3d/framebuffer/qml/framebuffer/framebuffer.js 0
+
+    Then, in the \c initGL function, we create the framebuffer object:
+
+    \snippet canvas3d/framebuffer/qml/framebuffer/framebuffer.js 1
+
+    \section1 Creating the Texture
+
+    After the creation of the framebuffer, we create the texture:
+
+    \snippet canvas3d/framebuffer/qml/framebuffer/framebuffer.js 2
+
+    Then we need to bind the texture as a color attachment, create and bind
+    a render buffer, and bind the depth attachment:
+
+    \snippet canvas3d/framebuffer/qml/framebuffer/framebuffer.js 3
+
+    \section1 Rendering into the Framebuffer
+
+    In \c renderGL function, we first need to draw the scene into the
+    framebuffer. We start by binding the framebuffer object and setting a
+    viewport:
+
+    \snippet canvas3d/framebuffer/qml/framebuffer/framebuffer.js 4
+
+    Then, we need to bind the loaded texture we want to use in rendering
+    into the framebuffer object:
+
+    \snippet canvas3d/framebuffer/qml/framebuffer/framebuffer.js 5
+
+    And then we can draw the textured cube into the framebuffer:
+
+    \snippet canvas3d/framebuffer/qml/framebuffer/framebuffer.js 6
+
+    \section1 Using the Framebuffer as a Texture
+
+    First, we bind the render-to-texture right after drawing, and generate
+    mipmaps:
+
+    \snippet canvas3d/framebuffer/qml/framebuffer/framebuffer.js 7
+
+    Then we need to bind the default framebuffer (screen), and set up the
+    viewport:
+
+    \snippet canvas3d/framebuffer/qml/framebuffer/framebuffer.js 8
+
+    And finally, we draw the on-screen view:
+
+    \snippet canvas3d/framebuffer/qml/framebuffer/framebuffer.js 9
+ */
