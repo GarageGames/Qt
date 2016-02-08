@@ -1006,7 +1006,17 @@ class XcodeSettings(object):
     sdk_root = self._SdkPath(config_name)
     if not sdk_root:
       sdk_root = ''
-    return l.replace('$(SDKROOT)', sdk_root)
+	  library = l.replace('$(SDKROOT)', sdk_root)
+	  if l.startswith('$(SDKROOT)'):
+		basename, ext = os.path.splitext(library)
+		if ext == '.dylib' and not os.path.exists(library):
+			tbd_library = basename + '.tbd'
+			if os.path.exists(tbd_library):
+				library = tbd_library
+	
+	return library
+    """"return l.replace('$(SDKROOT)', sdk_root)
+	"""
 
   def AdjustLibraries(self, libraries, config_name=None):
     """Transforms entries like 'Cocoa.framework' in libraries into entries like
