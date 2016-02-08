@@ -1006,8 +1006,8 @@ class XcodeSettings(object):
     sdk_root = self._SdkPath(config_name)
     if not sdk_root:
       sdk_root = ''
-	  library = l.replace('$(SDKROOT)', sdk_root)
-	  if l.startswith('$(SDKROOT)'):
+	library = l.replace('$(SDKROOT)', sdk_root)
+	if l.startswith('$(SDKROOT)'):
 		basename, ext = os.path.splitext(library)
 		if ext == '.dylib' and not os.path.exists(library):
 			tbd_library = basename + '.tbd'
