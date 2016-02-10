@@ -1,0 +1,10 @@
+#!/bin/bash
+cd qt-5
+./configure -release -nomake examples -nomake tests -opensource -confirm-license -prefix ../qt-build-macosx/
+make
+make install
+cd qtwebengine
+../qtbase/bin/qmake WEBENGINE_CONFIG+=proprietary_codecs -r
+cd ..
+make
+make install
