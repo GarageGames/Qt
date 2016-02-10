@@ -23,7 +23,7 @@ SET PATH=%_REPOROOT%icu53_1\lib;%PATH%
 cd %_REPOROOT%qt-5
 
 ECHO Run Configure >> %_LOGFILE%
-@CMD /c configure -icu -release -nomake examples -nomake tests -opensource -confirm-license
+@CMD /c configure -prefix %_REPOROOT%\releasebuild -icu -release -nomake examples -nomake tests -opensource -confirm-license -opengl dynamic
 ECHO Run first jom >> %_LOGFILE%
 @CMD /c jom >> %_LOGFILE%
 ECHO Run first jom install >> %_LOGFILE%
